@@ -21,23 +21,6 @@ class SendSlackSpamMessageView(CreateAPIView):
         if serializer.is_valid():
             serializer.save()
             message = serializer.data
-            # message = models.SlackMessage.objects.create(
-            #     RecordType = serializer.data.get('RecordType'),
-            #     Type = serializer.data.get('Type'),
-            #     TypeCode = serializer.data.get('TypeCode'),
-            #     Name = serializer.data.get('Name'),
-            #     Tag = serializer.data.get('Tag'),
-            #     MessageStream = serializer.data.get('MessageStream'),
-            #     Description = serializer.data.get('Description'),
-            #     From = serializer.data.get('From'),
-            #     Email = serializer.data.get('Email'))
-
-            # payload = models.SlackMessage.objects.last().__dict__
-            # new_payload = payload.pop('_state', 'id')
-            print("#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%")
-            print(message)
-            print("#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%#$%")
-
 
             client = WebClient(token="xoxp-2662551942742-2666298219765-4924786785060-71aa4576034942fbc1452c0a3a527df8")
             logger = logging.getLogger(__name__)
@@ -49,19 +32,14 @@ class SendSlackSpamMessageView(CreateAPIView):
                     result = client.chat_postMessage(
                         channel=channel_id,
                         text=f"{message}"
-                        # You could also use a blocks[] array to send richer content
-                    )
-                    # Print result, which includes information about the message (like TS)
-                    print(result)
-
+                        )
                     return Response({'status':True,
                             'message':'Message sent successfully'})
                 else:
                     return Response({'status':False,
                                 'message':'Message sending unsuccessful. Can only send messages of type SpamNotification'})
 
-
             except SlackApiError as e:
                 print(f"Error: {e}")
-                return Response({'status':True,
+                return Response({'status':False,
                                 'message':'Message sending unsuccessful'})
